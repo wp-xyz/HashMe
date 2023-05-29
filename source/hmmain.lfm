@@ -1,0 +1,412 @@
+object MainForm: TMainForm
+  Left = 261
+  Height = 202
+  Top = 130
+  Width = 500
+  Caption = 'Hash me'
+  ClientHeight = 202
+  ClientWidth = 500
+  Constraints.MinWidth = 500
+  OnActivate = FormActivate
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  LCLVersion = '2.3.0.0'
+  object edFileName: TFileNameEdit
+    AnchorSideLeft.Control = edSHA256
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 80
+    Height = 23
+    Top = 8
+    Width = 412
+    OnAcceptFileName = edFileNameAcceptFileName
+    FilterIndex = 0
+    HideDirectories = False
+    ButtonWidth = 23
+    NumGlyphs = 1
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 8
+    BorderSpacing.Right = 8
+    BorderSpacing.Bottom = 8
+    MaxLength = 0
+    TabOrder = 0
+  end
+  object lblFileName: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = edFileName
+    AnchorSideTop.Side = asrCenter
+    Left = 8
+    Height = 15
+    Top = 12
+    Width = 54
+    BorderSpacing.Left = 8
+    Caption = 'File name:'
+  end
+  object Bevel1: TBevel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = edFileName
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 8
+    Height = 3
+    Top = 41
+    Width = 484
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 10
+    BorderSpacing.Right = 8
+    Shape = bsTopLine
+  end
+  object edMD5: TEdit
+    AnchorSideLeft.Control = edSHA256
+    AnchorSideTop.Control = Bevel1
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = ImageMD5
+    Left = 80
+    Height = 23
+    Top = 52
+    Width = 296
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 8
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 1
+  end
+  object edSHA1: TEdit
+    AnchorSideLeft.Control = edSHA256
+    AnchorSideTop.Control = edMD5
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = ImageSHA1
+    Left = 80
+    Height = 23
+    Top = 83
+    Width = 296
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 8
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 3
+  end
+  object Bevel2: TBevel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = edSHA256
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 8
+    Height = 3
+    Top = 145
+    Width = 484
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 8
+    BorderSpacing.Right = 8
+    BorderSpacing.Bottom = 8
+    Shape = bsTopLine
+  end
+  object btnCalculate: TButton
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = btnClose
+    Left = 8
+    Height = 25
+    Top = 156
+    Width = 75
+    BorderSpacing.Left = 8
+    Caption = 'Calculate'
+    OnClick = btnCalculateClick
+    TabOrder = 5
+  end
+  object btnClose: TButton
+    AnchorSideTop.Control = Bevel2
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 417
+    Height = 25
+    Top = 156
+    Width = 75
+    Anchors = [akTop, akRight]
+    BorderSpacing.Around = 8
+    Caption = 'Close'
+    OnClick = btnCloseClick
+    TabOrder = 6
+  end
+  object btnCompareMD5: TButton
+    AnchorSideTop.Control = edMD5
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 408
+    Height = 25
+    Top = 51
+    Width = 84
+    Anchors = [akTop, akRight]
+    AutoSize = True
+    BorderSpacing.Right = 8
+    Caption = 'Compare...'
+    OnClick = btnCompareMD5Click
+    TabOrder = 2
+  end
+  object btnCompareSHA1: TButton
+    AnchorSideTop.Control = edSHA1
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 408
+    Height = 25
+    Top = 82
+    Width = 84
+    Anchors = [akTop, akRight]
+    AutoSize = True
+    BorderSpacing.Right = 8
+    Caption = 'Compare...'
+    OnClick = btnCompareSHA1Click
+    TabOrder = 4
+  end
+  object ImageMD5: TImage
+    AnchorSideTop.Control = btnCompareMD5
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = btnCompareMD5
+    Left = 384
+    Height = 16
+    Top = 55
+    Width = 16
+    Anchors = [akTop, akRight]
+    AutoSize = True
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
+    ImageIndex = -1
+    Images = ImageList
+  end
+  object ImageSHA1: TImage
+    AnchorSideTop.Control = btnCompareSHA1
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = btnCompareSHA1
+    Left = 384
+    Height = 16
+    Top = 86
+    Width = 16
+    Anchors = [akTop, akRight]
+    AutoSize = True
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
+    ImageIndex = -1
+    Images = ImageList
+  end
+  object edSHA256: TEdit
+    AnchorSideLeft.Control = cbSHA256
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = edSHA1
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = ImageSHA1
+    Left = 80
+    Height = 23
+    Top = 114
+    Width = 296
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 8
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 7
+  end
+  object ImageSHA256: TImage
+    AnchorSideTop.Control = edSHA256
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = btnCompareSHA256
+    Left = 384
+    Height = 16
+    Top = 117
+    Width = 16
+    Anchors = [akTop, akRight]
+    AutoSize = True
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
+    ImageIndex = -1
+    Images = ImageList
+  end
+  object btnCompareSHA256: TButton
+    AnchorSideTop.Control = edSHA256
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 408
+    Height = 25
+    Top = 113
+    Width = 84
+    Anchors = [akTop, akRight]
+    AutoSize = True
+    BorderSpacing.Right = 8
+    Caption = 'Compare...'
+    OnClick = btnCompareSHA256Click
+    TabOrder = 8
+  end
+  object cbSHA256: TCheckBox
+    AnchorSideLeft.Control = lblFileName
+    AnchorSideTop.Control = edSHA256
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = lblFileName
+    AnchorSideRight.Side = asrBottom
+    Left = 8
+    Height = 19
+    Top = 116
+    Width = 64
+    BorderSpacing.Right = 8
+    Caption = 'SHA-256'
+    Checked = True
+    State = cbChecked
+    TabOrder = 9
+  end
+  object cbSHA1: TCheckBox
+    AnchorSideLeft.Control = lblFileName
+    AnchorSideTop.Control = edSHA1
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Side = asrBottom
+    Left = 8
+    Height = 19
+    Top = 85
+    Width = 52
+    Caption = 'SHA-1'
+    Checked = True
+    State = cbChecked
+    TabOrder = 10
+  end
+  object cbMD5: TCheckBox
+    AnchorSideLeft.Control = lblFileName
+    AnchorSideTop.Control = edMD5
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = lblFileName
+    AnchorSideRight.Side = asrBottom
+    Left = 8
+    Height = 19
+    Top = 54
+    Width = 43
+    Caption = 'MD5'
+    Checked = True
+    State = cbChecked
+    TabOrder = 11
+  end
+  object btnCopyAll: TButton
+    AnchorSideLeft.Control = btnCalculate
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = btnClose
+    Left = 91
+    Height = 25
+    Top = 156
+    Width = 160
+    AutoSize = True
+    BorderSpacing.Left = 8
+    Caption = 'Copy hashes to clipboard'
+    OnClick = btnCopyAllClick
+    TabOrder = 12
+  end
+  object ImageList: TImageList
+    Scaled = True
+    Left = 228
+    Top = 57
+    Bitmap = {
+      4C7A0200000010000000100000007C0200000000000078DAB553B96E5351101D
+      8C04058845B1431F1B27B115639A40E00BA8909DE744F90C209411014A086113
+      5B6397FC024BC35202063D9B085100129408084824466138E7716F74B9DC4714
+      04C5D19B3B3367F6A7AAA2FF08B567D23FD191D38D8EB4812F066DEAA662D965
+      FD665532D0CD033356D7E84A04DF45A007F936BE735157CEE07B0BF806DD4760
+      945CBC9B80461D39E770BF3762B937194BDEAF8B3AC43A01BF4DE0B4C8650CC6
+      62CD495E70694FEB8DBE3E977AD36F2F94772D6E527B479EB25F136B867371ED
+      6EBFC917354EC432EDF017F13E4B99F37073F8DCE41DCB71C8EF5D3EE71CCCE5
+      718DFF1CF0C9E1B76DFD8118A17EEFA286C7F68D9A4F99FD1602F7F1CB2C2617
+      A4485FF43BBB1AEF89E4580F70FF4FFB3BF45236C3E721F0A1B6207DAE2D8AA5
+      0EFD0AF060FCB9ECFEED7E7EE6257705B33A1C8A8F9E6AC98DB29758EE7017C9
+      3E20273AE44DE35A4CBD902CFC4E723EF87E4EEEB22B8FD8AF5FF3FFC4C888EE
+      1C1CD46868488F0E0FEB11CAD5AAEE588B97CF6B3F3837801EA01EA8BB562868
+      2EC42D95B40CFB1B6009B8502CEA68A5A25B08D8F651676CAFE91BC84BEE5BD4
+      5A49AB0F31F7D087312067AD1EEFEBC057DA453403F900BFD6EEEA907B2FE465
+      CCE52A6D9C0B7BC3FB3CDFC87FD0F4DBA4BFE136A9A3CDE4BBCC180303BADDCC
+      59D9AF93AB6962B40C56E3D107B9F61B5D1D98A65C2EEB56A7DE0DA6273BFB96
+      DB0F7D8DFE9881CFCF387959F74DE8365A3B76B88D7ADE06BEE3EBAD1FF298AD
+      DFCE0FB8F837F373F6B7B4CEFD5D71FAC9F126781B984335ED7E0CF71DF00AE8
+      0BDC2F632C0397D823676A663D666B2617BA52CA7D667957C6CFFF7F929AFDBC
+      21702E9C2DF7637654B7B3F2F103D306726B
+    }
+    BitmapAdv = {
+      4C69020000004C7A020000001800000018000000A90300000000000078DADD56
+      4B4BD45114BFD932890A7BD8262A757CA066BA09310B7A4D10F99A11735BEDFB
+      06953D3E40DFA02C88A245CB8CD082281785CE28A92016192E52C3614A2BBCFD
+      CE74EE78BCDEFF631A83687198B9E7F1BBE79EF33B67466BADF47F289D49551B
+      4FAA9E5852BD827C827C87CC4006E30975A33DA16ABC6263C3EA10FCEEC2A761
+      8D6D4495401EC1AE036419F2B86D54ED91F11D23AA09FA14F97424D53DCB1605
+      F6178191C4F91AE45C7C541D833D06B99ED1AFF8CCB4BC555B6CECCC27DE6161
+      FF64DB14F05ABCDEAFB4DA80DA9D81DF04C5910EE7469C17383E8DF351AB2626
+      EFD7AD436A47981E5DD6AA20089BF14DBDA7C2621B09C2269E70AF34DE7A763D
+      B1D9A7C7F432FB9E376A3B891FB6DD4B3A93BE6B4C15ADAACD6F7E6BE289B173
+      2F164C4C586CE648BF854FB3A3F18EAE2CFECA9B53F61D5ED8346F382F42662D
+      FCA54CED13EA44505D7D399850C759BFE497BF579EB05F72E52DFCBBB9CE1F5D
+      F5A7B90CA8B3F6C2669C9B8CFF721546525DB5F913A6DEF63CC3369AA9430263
+      276CDC970CFF51C356BF7D28F789C5F1F6ECCE1B56D58EB73D64FBFBAE84DA99
+      CB8C913FE23E3047EE3B777D42ED877D9EEF180C7B07630F72DC5C6C48EDF599
+      F593F0F961DE815CDAA8AE3EFBB3DDE44D7192DF0177CC0BAE8CD06F15718FF7
+      7F379D4D2F4DDE61B0B3FD1E56FB10F320DB739FDF2FAAB75F4DFC8478008C2B
+      C4677C4EF39C4FD39938E8E2C9BF2A68E8C64844EF2E2FD7F5241515BA9874F9
+      E202E734F07A2173106D09E97ACBCA743457DCCA4A5D07EC170E4CA7E06DCF71
+      4F6DC89C3B11F355C43F81EE3C302235357A13097D271D6C7DC22F0D7D3C04F6
+      32FB8FE11D4D21F2390CDF718E59F6BAA3AA4A1F10790F5457EBAD61EB49BE14
+      63DEE1AA95A8F7BB5CB0AD3BC64D3F1C3CC9D451D604E75B9049579D484736F2
+      11FECD0647F28A3998E9A5C4E078D2A7E41D8C9D62DBA415D3C76FB86D66C7F0
+      9B38E1C83125EF70E92CFC8B6C9B057601CFA5E171C4AE03748DB02DB0FD1B72
+      480B3EAEF9BF86BA941B3C7066177C1AC4B9D0D53BBE232DF2587461330F0BC5
+      4CD4B3AC1B7E4989DE2CB852976B7DC43DA1EAF317FBFB99FACBFCBFC3BABE7C
+      F989373D95FCE43745CD9B689FE4315F4744AD4F59B93E33F9E0BEA27CF603ED
+      22475F6A45EF72DA6FE8E336DA39A2EF351E3C8C8BFD4CB9340761734D2682F6
+      B375475ACC08ED930BA5A5BA82E68384BE134F4C2FC3FEBE58B51A08FBFB08E9
+      F7AA49C03D51E219ED2A07E62CD96C9EFCE1FF9302FA4F0239C8526C6627487E
+      018C4204D14C7A020000002000000020000000260500000000000078DAED58CD
+      6F5455143F8006F910F6844035A52D60F00317260261A798F80133D3620C0BA2
+      F217A0362C40856254D458306E507726B050D146C3405BEA07B8E8A6CEBC9922
+      2EA02D868218610075E3F5775EEF7B9EB973DF7BF74D1F2C0C8B13DEDC7BCEF9
+      9D7BBE8B528AD46D8AA5AE0A3D5428D36BA0415015744DD32F058F4E7496E855
+      F03C428A6624E9DA708666837F07137F47F1B12EE8CE834681A31C69A4B34CCF
+      160ED32C9BCEC2499A037DC590DFA36E2BDF08DD5328D1A914B8F554A2A14D15
+      5A1A8B1D81DF59A175B8BB64E8BC0CDE83A0A7605BFB96119AF7E430CDDD5CA5
+      16606DCC7BF421EEFE30648E266017F9DC82FDB7E0BB0E7FEE7EEE0C2D488A2B
+      F340E74E2DFF6361981686D8253A9684EDFBBCFEDD63398F1E6C2257EF4B8BED
+      E75A7DBCC7368FD2A2E9D48C2BB6CFCB792E7CDECCBB9BC5D67516D618C7FB56
+      618BDE12F0FEE6926B5961FB32537D2DE03D98B64FB9D618E7246CEBB2E00F06
+      FCA8E3A7454E743BBFC1059B6BB24C0316FCD3814C5795DAACF871B99B80BD6D
+      98EED4D87C3E61C1AF09B9F9697A960B0FC74EDCFF69C1BF6AC30F653DEA337B
+      3BF75FD75CF3FBE27F3C57E2FC9FABD03267FF3AF473A6DC4FD421F8AA16FC01
+      5BFE25DAE058633C9F046F7FC3BCC3EE20F03F4A95E36EF5FD89E0DDD9E01FF4
+      5A3967E3FA4F433E24614FD5DDE5B0BECA74BFB5FF4EED5481CE3D59EC4F4CF0
+      678F789B17C5879E9F13F837B82767B233425738572AF44CECAE57A61FB29ABF
+      2CCB3A84BE6F9364785F03DFA4F0C344AE440FA79E411E3D00F9B372A6A106EF
+      759145BCD6D6ED5FEC3FE483CB4CE45CF3E32D7C0EFA0BBFD7A4B1DFB7C1A38B
+      E6FE897CFB9863E8F713F44926FEE633BE03CFEF86CC645AEC307EBCD796E9FB
+      A6F76FC41BD84BA69BC3F9126D82AE4A0A5C2F2ECF9BDE6B905388CB2EEE9FBA
+      57D434F177BF7F079EDB7FABFE7F094D72D6F2E56A5D47877A0734041A055DD3
+      54D567FB56AC506B99372BDCC58BD51CE8ED065D022947BA085B5F61D9E960B7
+      B7AB4EE89A48816BD23874E49BF0F54CC8BE61D1770ED40B7A0C7ADB57AD52F3
+      98F89BCF40FBF13D66C8FC03DACB3A5DB1E1BBC396776C7589ABCE93E74DBFE1
+      EC908B0D96777FB672A59ADF44ECEE06E61786AE1E877887FCF8FD9EABDF62E2
+      D86BC4221795E73276F8FE7C3AD8860D47840D13AB57ABB916BF77CB784B9FB7
+      B6AAD938DBC1C4DF5158517C1C0B9C9D17B9F0B299335CB3E2ED5B636C2BDAEA
+      5AF789A2E0ABFBBF2D60BE20EE26652EEBBE16D69899E7067E830D16EC067CFD
+      C6F1E0BEAD4DAD11FADF1572EF3BBC2DB421EECE12E30382E76D717E42F8FEF1
+      98D8F619F5F11DFE1D70C166C29B3708BE0181FF73708EBC6B4DC8AFBE987E5B
+      8CEBF9BA4F06BCA302BF26F0637B0DDB003DDF58B0FB93E60DEB16FC35817FD5
+      155FF7897E139F63C1B320C1F60542E68AC03F2D6A7359C22C3E16E3FFA1381B
+      10FF0EC15B15F88349F967C306EF714B2C226DC0DB9E88C8BF7DE2BCF766D51F
+      6CFD40D8FE6670CE3B93381FBB19FD67FD7A7587EC3FC07934AAFFF2FCCEBAFF
+      E2F78BE2EE8239DB785F93338A674656F347E7FDAF42FF7653B6A545DDA5F7AB
+      C0075F67B1C7EAF9FBA5C03ECB5811FD29AF7784301733D83FF6CBFD03EFDA98
+      B07FED35F2E8888C852B699F7F65D4EBEB8EFBE721C386F33CBF5DE2A1F37C9B
+      116FA64F213F2385DF7A8C5828BD9F1DE039C6BD8C7B35137F736FD1F53D6EEE
+      DFB8DBED8A6DC42267D9E7D3D0B9A4782711E72AEF6B5CB329702FC0EE97A2F2
+      BCD9BF3F7967E2BD45CF8BAA9EDB35FD3D083BDFE2BE96C5DE7CABE85F0C55C7
+      F2
+    }
+  end
+  object ApplicationProperties1: TApplicationProperties
+    OnIdle = ApplicationProperties1Idle
+    Left = 138
+    Top = 57
+  end
+end
