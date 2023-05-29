@@ -239,7 +239,7 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
   cInputQueryEditSizePercents := 0;
-  cInputQueryEditSizePixels := 320;
+  cInputQueryEditSizePixels := 400;
   ReadIni;
 end;
 
