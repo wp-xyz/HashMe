@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, EditBtn, StdCtrls,
-  ExtCtrls;
+  ExtCtrls, Buttons;
 
 type
 
@@ -16,12 +16,12 @@ type
     ApplicationProperties1: TApplicationProperties;
     Bevel1: TBevel;
     Bevel2: TBevel;
-    btnCalculate: TButton;
-    btnClose: TButton;
+    btnCalculate: TBitBtn;
+    btnClose: TBitBtn;
     btnCompareMD5: TButton;
     btnCompareSHA1: TButton;
     btnCompareSHA256: TButton;
-    btnCopyAll: TButton;
+    btnCopyAll: TBitBtn;
     edMD5: TEdit;
     edFileName: TFileNameEdit;
     edSHA1: TEdit;
@@ -47,6 +47,7 @@ type
     procedure FormCreate(Sender: TObject);
   private
     FStream: TStream;
+    FActivated: Boolean;
     procedure Calculate(const AFileName: String);
     procedure CompareHash(HashName: String; Value: String; Image: TImage);
     procedure ReadIni;
@@ -222,9 +223,14 @@ end;
 
 procedure TMainForm.FormActivate(Sender: TObject);
 begin
-  Constraints.MinHeight := btnClose.Top + btnClose.Height + btnClose.BorderSpacing.Around;
-  Constraints.MaxHeight := Constraints.MinHeight;
-  ClientHeight := 0;  // enforce constraints;
+  if not FActivated then
+  begin
+    ReadIni;
+    btnClose.Constraints.MinWidth := btnCompareMD5.Width;
+    Constraints.MinHeight := btnClose.Top + btnClose.Height + btnClose.BorderSpacing.Bottom;
+    Constraints.MaxHeight := Constraints.MinHeight;
+    ClientHeight := 0;  // enforce constraints;
+  end;
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -240,7 +246,6 @@ procedure TMainForm.FormCreate(Sender: TObject);
 begin
   cInputQueryEditSizePercents := 0;
   cInputQueryEditSizePixels := 400;
-  ReadIni;
 end;
 
 procedure TMainForm.ReadIni;
@@ -253,7 +258,10 @@ begin
   try
     w := ini.ReadInteger('MainForm', 'Width', 0);
     if w <> 0 then
+    begin
+      if w > Screen.Width then w := Screen.Width;
       ClientWidth := w;
+    end;
 
     cbMD5.Checked := ini.ReadBool('Settings', 'GetMD5', cbMD5.Checked);
     cbSHA1.Checked := ini.ReadBool('Settings', 'GetSHA1', cbSHA1.Checked);
