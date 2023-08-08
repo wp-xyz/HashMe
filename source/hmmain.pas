@@ -242,6 +242,8 @@ begin
     FStream := TFileStream.Create(AFileName, fmOpenRead or fmShareDenyWrite);
     FStream.Position := 0;
 
+    if cbCRC32.Checked then
+      crc32Value := CRC32(0, nil, 0);
     if cbMD2.Checked then
       MDInit(md2, MD_VERSION_2);
     if cbMD4.Checked then
@@ -262,7 +264,7 @@ begin
     begin
       n := FStream.Read(buffer[0], BLOCK_SIZE);
       if cbCRC32.Checked then
-        crc32Value := CRC32(0, @buffer[0], n);
+        crc32Value := CRC32(crc32Value, @buffer[0], n);
       if cbMD2.Checked then
         MDUpdate(md2, buffer[0], n);
       if cbMD4.Checked then
@@ -281,44 +283,44 @@ begin
     SetLength(buffer, 0);
 
     if cbCRC32.Checked then
-      edCRC32.Text := Format('%.8x', [crc32Value]);
+      edCRC32.Text := Lowercase(Format('%.8x', [crc32Value]));
     if cbMD2.Checked then
     begin
       MDFinal(md2, md2Digest);
-      edMD2.Text := MDPrint(md2Digest);
+      edMD2.Text := Lowercase(MDPrint(md2Digest));
     end;
     if cbMD4.Checked then
     begin
       MDFinal(md4, md4Digest);
-      edMD4.Text := MDPrint(md4Digest);
+      edMD4.Text := Lowercase(MDPrint(md4Digest));
     end;
     if cbMD5.Checked then
     begin
       MDFinal(md5, md5Digest);
-      edMD5.Text := MDPrint(md5Digest);
+      edMD5.Text := Lowercase(MDPrint(md5Digest));
     end;
     if cbSHA1.Checked then
     begin
       SHA1Final(sha1, sha1Digest);
-      edSHA1.Text := SHA1Print(sha1Digest);
+      edSHA1.Text := Lowercase(SHA1Print(sha1Digest));
     end;
     if cbSHA256.Checked then
     begin
       sha256.Final;
       sha256.OutputHexa(sha256Result);
-      edSHA256.Text := sha256Result;
+      edSHA256.Text := Lowercase(sha256Result);
     end;
     if cbSHA384.Checked then
     begin
       sha384.Final;
       sha384.OutputHexa(sha384Result);
-      edSHA384.Text := sha384Result;
+      edSHA384.Text := Lowercase(sha384Result);
     end;
     if cbSHA512.Checked then
     begin
       sha512.Final;
       sha512.OutputHexa(sha512Result);
-      edSHA512.Text := sha512Result;
+      edSHA512.Text := Lowercase(sha512Result);
     end;
   finally
     Screen.EndWaitCursor;
