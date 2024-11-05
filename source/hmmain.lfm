@@ -6944,10 +6944,10 @@ object MainForm: TMainForm
     FE80017FFE80017FFE80017FFF80017FFF80017BFF800156FF800100FFF00F42
     FFFC3F5EFF
   }
+  LCLVersion = '4.99.0.0'
   OnActivate = FormActivate
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  LCLVersion = '3.99.0.0'
   object edFileName: TFileNameEdit
     AnchorSideLeft.Control = edSHA256
     AnchorSideTop.Control = Owner
@@ -7053,8 +7053,8 @@ object MainForm: TMainForm
     AutoSize = True
     BorderSpacing.Right = 8
     Caption = 'Compare...'
-    OnClick = btnCompareMD5Click
     TabOrder = 2
+    OnClick = btnCompareMD5Click
   end
   object btnCompareSHA1: TButton
     AnchorSideTop.Control = edSHA1
@@ -7069,8 +7069,8 @@ object MainForm: TMainForm
     AutoSize = True
     BorderSpacing.Right = 8
     Caption = 'Compare...'
-    OnClick = btnCompareSHA1Click
     TabOrder = 4
+    OnClick = btnCompareSHA1Click
   end
   object ImageMD5: TImage
     AnchorSideTop.Control = btnCompareMD5
@@ -7146,8 +7146,8 @@ object MainForm: TMainForm
     AutoSize = True
     BorderSpacing.Right = 8
     Caption = 'Compare...'
-    OnClick = btnCompareSHA256Click
     TabOrder = 6
+    OnClick = btnCompareSHA256Click
   end
   object cbSHA256: TCheckBox
     AnchorSideLeft.Control = lblFileName
@@ -7210,8 +7210,8 @@ object MainForm: TMainForm
     Caption = 'Close'
     Images = ImageList
     ImageIndex = 2
-    OnClick = btnCloseClick
     TabOrder = 10
+    OnClick = btnCloseClick
   end
   object btnCalculate: TBitBtn
     AnchorSideLeft.Control = Owner
@@ -7225,8 +7225,8 @@ object MainForm: TMainForm
     Caption = 'Calculate'
     Images = ImageList
     ImageIndex = 4
-    OnClick = btnCalculateClick
     TabOrder = 11
+    OnClick = btnCalculateClick
   end
   object btnCopyAll: TBitBtn
     AnchorSideLeft.Control = btnCalculate
@@ -7241,8 +7241,8 @@ object MainForm: TMainForm
     Caption = 'Copy hashes to clipboard'
     Images = ImageList
     ImageIndex = 3
-    OnClick = btnCopyAllClick
     TabOrder = 12
+    OnClick = btnCopyAllClick
   end
   object cbSHA384: TCheckBox
     AnchorSideLeft.Control = lblFileName
@@ -7304,8 +7304,8 @@ object MainForm: TMainForm
     AutoSize = True
     BorderSpacing.Right = 8
     Caption = 'Compare...'
-    OnClick = btnCompareSHA384Click
     TabOrder = 15
+    OnClick = btnCompareSHA384Click
   end
   object cbSHA512: TCheckBox
     AnchorSideLeft.Control = lblFileName
@@ -7367,8 +7367,8 @@ object MainForm: TMainForm
     AutoSize = True
     BorderSpacing.Right = 8
     Caption = 'Compare...'
-    OnClick = btnCompareSHA512Click
     TabOrder = 18
+    OnClick = btnCompareSHA512Click
   end
   object cbCRC32: TCheckBox
     AnchorSideLeft.Control = lblFileName
@@ -7428,8 +7428,8 @@ object MainForm: TMainForm
     AutoSize = True
     BorderSpacing.Right = 8
     Caption = 'Compare...'
-    OnClick = btnCompareCRC32Click
     TabOrder = 21
+    OnClick = btnCompareCRC32Click
   end
   object cbMD2: TCheckBox
     AnchorSideLeft.Control = lblFileName
@@ -7489,8 +7489,8 @@ object MainForm: TMainForm
     AutoSize = True
     BorderSpacing.Right = 8
     Caption = 'Compare...'
-    OnClick = btnCompareMD2Click
     TabOrder = 24
+    OnClick = btnCompareMD2Click
   end
   object cbMD4: TCheckBox
     AnchorSideLeft.Control = lblFileName
@@ -7550,8 +7550,8 @@ object MainForm: TMainForm
     AutoSize = True
     BorderSpacing.Right = 8
     Caption = 'Compare...'
-    OnClick = btnCompareMD4Click
     TabOrder = 27
+    OnClick = btnCompareMD4Click
   end
   object ImageList: TImageList
     Scaled = True

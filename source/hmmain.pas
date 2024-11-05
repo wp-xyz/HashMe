@@ -54,7 +54,7 @@ type
     cbMD5: TCheckBox;
     cbSHA1: TCheckBox;
     cbSHA256: TCheckBox;
-    procedure ApplicationProperties1Idle(Sender: TObject; var Done: Boolean);
+    procedure ApplicationProperties1Idle(Sender: TObject; var {%H-}Done: Boolean);
     procedure btnCalculateClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure btnCompareCRC32Click(Sender: TObject);
@@ -195,7 +195,6 @@ procedure TMainForm.Calculate(const AFileName: String);
 var
   buffer: array of Byte = nil;
   crc32Value: Cardinal;
-  crc32Result: String;
   md2: TMDContext;
   md2Digest: TMDDigest;
   md4: TMDContext;
