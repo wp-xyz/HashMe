@@ -222,13 +222,9 @@ var
 begin
   hash := THasher.Create(AMethod);
   try
-    if hash.SelfCheck then
-    begin
-      AStream.Position := 0;
-      hash.Update(AStream);
-      AEdit.Text := Lowercase(hash.Final);
-    end else
-      AEdit.Text := 'Self-check failed.';
+    AStream.Position := 0;
+    hash.Update(AStream);
+    AEdit.Text := Lowercase(hash.Final);
   finally
     hash.Free;
   end;
@@ -353,6 +349,7 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
+  Caption := 'HashMe - based on XelHash';
   cInputQueryEditSizePercents := 0;
   cInputQueryEditSizePixels := 400;
 end;
