@@ -4,6 +4,7 @@ uses
 
 const
   TestStr: String = '123456789';  // This is the test string of XelHash
+  TestStr2: String = 'abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq';  // used by DCPcrypt
 
 procedure Test_CRC32;
 const
@@ -15,7 +16,7 @@ begin
   hash := crc32(0, nil, 0);
   hash := crc32(hash, @TestStr[1], Length(TestStr));
   WriteLn;
-  WriteLn('CRC-32');
+  WriteLn('CRC-32 (', TestStr, ')');
   WriteLn('  calculated: ', Lowercase(Format('%.8x', [hash])));
   WriteLn('  expected:   ', Lowercase(SollCRC32));
   if Lowercase(Format('%.8x', [hash])) = Lowercase(SollCRC32) then
@@ -34,7 +35,7 @@ begin
   hash := crc64(0, nil, 0);
   hash := crc64(hash, @TestStr[1], Length(TestStr));
   WriteLn;
-  WriteLn('CRC-64');
+  WriteLn('CRC-64 (', TestStr, ')');
   WriteLn('  calculated: ', Lowercase(Format('%.16x', [hash])));
   WriteLn('  expected:   ', Lowercase(SollCRC64));
   if Lowercase(Format('%.16x', [hash])) = Lowercase(SollCRC64) then
@@ -55,7 +56,7 @@ begin
   sha1Digest := sha1string(TestStr);
   sha1Value := sha1Print(sha1Digest);
   WriteLn;
-  WriteLn('SHA-1');
+  WriteLn('SHA-1 (', TestStr, ')');
   WriteLn('  calculated: ', sha1Value);
   WriteLn('  expected:   ', SollSHA1);
   if sha1Value = SollSHA1 then
@@ -79,7 +80,30 @@ begin
   sha256.OutputHexa(sha256Value);
 
   WriteLn;
-  WriteLn('SHA-256');
+  WriteLn('SHA-256 (', TestStr, ')');
+  WriteLn('  calculated: ', lowercase(sha256Value));
+  WriteLn('  expected:   ', SollSHA256);
+  if lowercase(sha256Value) = SollSHA256 then
+    WriteLn('  --> ok')
+  else
+    WriteLn('  --> ERROR');
+end;
+
+procedure Test_SHA256_long;
+const
+  //https://emn178.github.io/online-tools/sha256.html/
+  SollSHA256 = '248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1';
+var
+  sha256: TSHA256;
+  sha256Value: String;
+begin
+  sha256.Init;
+  sha256.Update(@TestStr2[1], Length(TestStr2));
+  sha256.Final;
+  sha256.OutputHexa(sha256Value);
+
+  WriteLn;
+  WriteLn('SHA-256 (', TestStr2, ')');
   WriteLn('  calculated: ', lowercase(sha256Value));
   WriteLn('  expected:   ', SollSHA256);
   if lowercase(sha256Value) = SollSHA256 then
@@ -103,7 +127,7 @@ begin
   sha384.OutputHexa(sha384Value);
 
   WriteLn;
-  WriteLn('SHA-384');
+  WriteLn('SHA-384 (', TestStr, ')');
   WriteLn('  calculated: ', lowercase(sha384Value));
   WriteLn('  expected:   ', SollSHA384);
   if lowercase(sha384Value) = SollSHA384 then
@@ -127,7 +151,30 @@ begin
   sha512.OutputHexa(sha512Value);
 
   WriteLn;
-  WriteLn('SHA-512');
+  WriteLn('SHA-512 (', TestStr, ')');
+  WriteLn('  calculated: ', lowercase(sha512Value));
+  WriteLn('  expected:   ', SollSHA512);
+  if lowercase(sha512Value) = SollSHA512 then
+    WriteLn('  --> ok')
+  else
+    WriteLn('  --> ERROR');
+end;
+
+procedure Test_SHA512_long;
+const
+  // https://emn178.github.io/online-tools/sha512.html
+  SollSHA512 = '204a8fc6dda82f0a0ced7beb8e08a41657c16ef468b228a8279be331a703c33596fd15c13b1b07f9aa1d3bea57789ca031ad85c7a71dd70354ec631238ca3445';
+var
+  sha512: TSHA512;
+  sha512Value: String;
+begin
+  sha512.Init;
+  sha512.Update(@TestStr2[1], Length(TestStr2));
+  sha512.Final;
+  sha512.OutputHexa(sha512Value);
+
+  WriteLn;
+  WriteLn('SHA-512 (', TestStr2, ')');
   WriteLn('  calculated: ', lowercase(sha512Value));
   WriteLn('  expected:   ', SollSHA512);
   if lowercase(sha512Value) = SollSHA512 then
@@ -145,6 +192,10 @@ begin
   Test_SHA256;
   Test_SHA384;
   Test_SHA512;
+  WriteLn('--------------------------------------------');
+  Test_SHA256_long;
+  Test_SHA512_long;
+
 
   ReadLn;
 
