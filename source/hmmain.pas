@@ -18,6 +18,7 @@ type
     Bevel2: TBevel;
     btnCalculate: TBitBtn;
     btnClose: TBitBtn;
+    btnCompareCRC64: TButton;
     btnCompareMD5: TButton;
     btnCompareCRC32: TButton;
     btnCompareMD2: TButton;
@@ -28,10 +29,12 @@ type
     btnCompareSHA512: TButton;
     btnCopyAll: TBitBtn;
     cbCRC32: TCheckBox;
+    cbCRC64: TCheckBox;
     cbMD2: TCheckBox;
     cbMD4: TCheckBox;
     cbSHA384: TCheckBox;
     cbSHA512: TCheckBox;
+    edCRC64: TEdit;
     edMD5: TEdit;
     edFileName: TFileNameEdit;
     edCRC32: TEdit;
@@ -41,6 +44,7 @@ type
     edSHA256: TEdit;
     edSHA384: TEdit;
     edSHA512: TEdit;
+    ImageCRC64: TImage;
     ImageMD5: TImage;
     ImageList: TImageList;
     ImageCRC32: TImage;
@@ -58,6 +62,8 @@ type
     procedure btnCalculateClick(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
     procedure btnCompareCRC32Click(Sender: TObject);
+    procedure btnCompareCRC64Click(Sender: TObject);
+    //    procedure btnCompareCRC128Click(Sender: TObject);
     procedure btnCompareMD2Click(Sender: TObject);
     procedure btnCompareMD4Click(Sender: TObject);
     procedure btnCompareMD5Click(Sender: TObject);
@@ -91,16 +97,18 @@ implementation
 
 uses
   IniFiles, ClipBrd,
-  CRC, MD5, SHA1, fpsha256, fpsha512;
+  CRC, MD5, SHA1, fphashutils, fpsha256, fpsha512;
 
 const
-  BLOCK_SIZE = 1024*1024;
+  BLOCK_SIZE = 1024*2; //1024;
 
 procedure TMainForm.ApplicationProperties1Idle(Sender: TObject;
   var Done: Boolean);
 begin
   btnCalculate.Enabled := edFileName.Text <> '';
   btnCompareCRC32.Enabled := cbCRC32.Checked and (edCRC32.Text <> '');
+  btnCompareCRC64.Enabled := cbCRC64.Checked and (edCRC64.Text <> '');
+  //btnCompareCRC128.Enabled := cbCRC128.Checked and (edCRC128.Text <> '');
   btnCompareMD2.Enabled := cbMD2.Checked and (edMD2.Text <> '');
   btnCompareMD4.Enabled := cbMD4.Checked and (edMD4.Text <> '');
   btnCompareMD5.Enabled := cbMD5.Checked and (edMD5.Text <> '');
@@ -108,7 +116,8 @@ begin
   btnCompareSHA256.Enabled := cbSHA256.Checked and (edSHA256.Text <> '');
   btnCompareSHA384.Enabled := cbSHA256.Checked and (edSHA384.Text <> '');
   btnCompareSHA512.Enabled := cbSHA256.Checked and (edSHA512.Text <> '');
-  btnCopyAll.Enabled := btnCompareCRC32.Enabled or
+  btnCopyAll.Enabled :=
+    btnCompareCRC32.Enabled or btnCompareCRC64.Enabled or //btnCompareCRC128.Enabled or
     btnCompareMD2.Enabled or btnCompareMD4.Enabled or btnCompareMD5.Enabled or
     btnCompareSHA1.Enabled or btnCompareSHA256.Enabled or
     btnCompareSHA384.Enabled or btnCompareSHA512.Enabled;
@@ -128,6 +137,18 @@ procedure TMainForm.btnCompareCRC32Click(Sender: TObject);
 begin
   CompareHash('CRC32', edCRC32.Text, ImageCRC32);
 end;
+
+procedure TMainForm.btnCompareCRC64Click(Sender: TObject);
+begin
+  CompareHash('CRC64', edCRC64.Text, ImageCRC64);
+end;
+
+{
+procedure TMainForm.btnCompareCRC128Click(Sender: TObject);
+begin
+  CompareHash('CRC128', edCRC128.Text, ImageCRC128);
+end;
+}
 
 procedure TMainForm.btnCompareMD2Click(Sender: TObject);
 begin
@@ -171,6 +192,12 @@ begin
   s := '';
   if cbCRC32.Checked then
     s := s + LineEnding + 'CRC32: ' + edCRC32.Text;
+  if cbCRC64.Checked then
+    s := s + LineEnding + 'CRC64: ' + edCRC64.Text;
+  {
+  if cbCRC128.Checked then
+    s := s + LineEnding + 'CRC128: ' + edCRC128.Text;
+  }
   if cbMD2.Checked then
     s := s + LineEnding + 'MD2: ' + edMD2.Text;
   if cbMD4.Checked then
@@ -194,7 +221,9 @@ end;
 procedure TMainForm.Calculate(const AFileName: String);
 var
   buffer: array of Byte = nil;
-  crc32Value: Cardinal;
+  crc32Value: LongWord;
+  crc64Value: QWord;
+  crc128Value: u128;
   md2: TMDContext;
   md2Digest: TMDDigest;
   md4: TMDContext;
@@ -212,6 +241,8 @@ var
   n: Integer;
 begin
   edCRC32.Text := '';
+  edCRC64.Text := '';
+  //edCRC128.Text := '';
   edMD2.Text := '';
   edMD4.Text := '';
   edMD5.Text := '';
@@ -221,6 +252,8 @@ begin
   edSHA512.Text := '';
 
   ImageCRC32.ImageIndex := -1;
+  ImageCRC64.ImageIndex := -1;
+  //ImageCRC128.ImageIndex := -1;
   ImageMD2.ImageIndex := -1;
   ImageMD4.ImageIndex := -1;
   ImageMD5.ImageIndex := -1;
@@ -243,6 +276,12 @@ begin
 
     if cbCRC32.Checked then
       crc32Value := CRC32(0, nil, 0);
+    if cbCRC64.Checked then
+      crc64Value := CRC64(0, nil, 0);
+    {
+    if cbCRC128.Checked then
+      crc128Value := CRC128(0, nil, 0);
+    }
     if cbMD2.Checked then
       MDInit(md2, MD_VERSION_2);
     if cbMD4.Checked then
@@ -259,11 +298,23 @@ begin
       sha512.Init;
 
     SetLength(buffer, BLOCK_SIZE);
+    {
+    repeat
+      n := FStream.Read(buffer[0], BLOCK_SIZE);
+      if n = 0 then
+        exit;
+     }
     while FStream.Position < FStream.Size do
     begin
       n := FStream.Read(buffer[0], BLOCK_SIZE);
       if cbCRC32.Checked then
         crc32Value := CRC32(crc32Value, @buffer[0], n);
+      if cbCRC64.Checked then
+        crc64Value := CRC64(crc64Value, @buffer[0], n);
+      {
+      if cbCRC128.Checked then
+        crc128Value := CRC128(crc128Value, @buffer[0], n);
+      }
       if cbMD2.Checked then
         MDUpdate(md2, buffer[0], n);
       if cbMD4.Checked then
@@ -278,11 +329,18 @@ begin
         sha384.Update(@buffer[0], n);
       if cbSHA512.Checked then
         sha512.Update(@buffer[0], n);
+//    until (n = 0);
     end;
     SetLength(buffer, 0);
 
     if cbCRC32.Checked then
       edCRC32.Text := Lowercase(Format('%.8x', [crc32Value]));
+    if cbCRC64.Checked then
+      edCRC64.Text := Lowercase(Format('%.16x', [crc64Value]));
+    {
+    if cbCRC128.Checked then
+      edCRC128.Text := Lowercase(Format('%.16x%.16x', [crc128Value.Hi, crc128Value.Lo]));
+    }
     if cbMD2.Checked then
     begin
       MDFinal(md2, md2Digest);
@@ -394,6 +452,8 @@ begin
     end;
 
     cbCRC32.Checked := ini.ReadBool('Settings', 'GetCRC32', cbCRC32.Checked);
+    cbCRC64.Checked := ini.ReadBool('Settings', 'GetCRC64', cbCRC64.Checked);
+    //cbCRC128.Checked := ini.ReadBool('Settings', 'GetCRC128', cbCRC128.Checked);
     cbMD2.Checked := ini.ReadBool('Settings', 'GetMD2', cbMD2.Checked);
     cbMD4.Checked := ini.ReadBool('Settings', 'GetMD4', cbMD4.Checked);
     cbMD5.Checked := ini.ReadBool('Settings', 'GetMD5', cbMD5.Checked);
@@ -419,6 +479,8 @@ begin
     ini.WriteInteger('MainForm', 'Width', ClientWidth);
 
     ini.WriteBool('Settings', 'GetCRC32', cbCRC32.Checked);
+    ini.WriteBool('Settings', 'GetCRC64', cbCRC64.Checked);
+    //ini.WriteBool('Settings', 'GetCRC128', cbCRC128.Checked);
     ini.WriteBool('Settings', 'GetMD2', cbMD2.Checked);
     ini.WriteBool('Settings', 'GetMD4', cbMD4.Checked);
     ini.WriteBool('Settings', 'GetMD5', cbMD5.Checked);
@@ -435,4 +497,5 @@ begin
 end;
 
 end.
+
 

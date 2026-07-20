@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="12"/>
+    <Version Value="13"/>
     <PathDelim Value="\"/>
     <General>
-      <Flags>
-        <CompatibilityMode Value="True"/>
-      </Flags>
       <SessionStorage Value="InProjectDir"/>
       <Title Value="hashme"/>
       <Scaled Value="True"/>
@@ -17,50 +14,9 @@
       </XPManifest>
       <Icon Value="0"/>
     </General>
-    <BuildModes Count="4">
-      <Item1 Name="Default" Default="True"/>
-      <Item2 Name="Debug">
-        <CompilerOptions>
-          <Version Value="11"/>
-          <PathDelim Value="\"/>
-          <Target>
-            <Filename Value="..\bin\$(TargetCPU)-$(TargetOS)\hashme"/>
-          </Target>
-          <SearchPaths>
-            <IncludeFiles Value="$(ProjOutDir)"/>
-            <OtherUnitFiles Value="fcl-hash"/>
-            <UnitOutputDirectory Value="..\ppu\$(TargetCPU)-$(TargetOS)"/>
-          </SearchPaths>
-          <Parsing>
-            <SyntaxOptions>
-              <IncludeAssertionCode Value="True"/>
-            </SyntaxOptions>
-          </Parsing>
-          <CodeGeneration>
-            <Checks>
-              <IOChecks Value="True"/>
-              <RangeChecks Value="True"/>
-              <OverflowChecks Value="True"/>
-              <StackChecks Value="True"/>
-            </Checks>
-            <VerifyObjMethodCallValidity Value="True"/>
-          </CodeGeneration>
-          <Linking>
-            <Debugging>
-              <DebugInfoType Value="dsDwarf3"/>
-              <UseHeaptrc Value="True"/>
-              <TrashVariables Value="True"/>
-              <UseExternalDbgSyms Value="True"/>
-            </Debugging>
-            <Options>
-              <Win32>
-                <GraphicApplication Value="True"/>
-              </Win32>
-            </Options>
-          </Linking>
-        </CompilerOptions>
-      </Item2>
-      <Item3 Name="Debug with heaptrc">
+    <BuildModes>
+      <Item Name="Default" Default="True"/>
+      <Item Name="Debug">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -99,8 +55,48 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item3>
-      <Item4 Name="Release">
+      </Item>
+      <Item Name="Debug with heaptrc">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="..\bin\$(TargetCPU)-$(TargetOS)\hashme"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="fcl-hash"/>
+            <UnitOutputDirectory Value="..\ppu\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <IncludeAssertionCode Value="True"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <Checks>
+              <IOChecks Value="True"/>
+              <RangeChecks Value="True"/>
+              <OverflowChecks Value="True"/>
+              <StackChecks Value="True"/>
+            </Checks>
+            <VerifyObjMethodCallValidity Value="True"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf3"/>
+              <TrashVariables Value="True"/>
+              <UseExternalDbgSyms Value="True"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item>
+      <Item Name="Release">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -131,7 +127,7 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item4>
+      </Item>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -140,25 +136,25 @@
     <RunParams>
       <FormatVersion Value="2"/>
     </RunParams>
-    <RequiredPackages Count="1">
-      <Item1>
+    <RequiredPackages>
+      <Item>
         <PackageName Value="LCL"/>
-      </Item1>
+      </Item>
     </RequiredPackages>
-    <Units Count="2">
-      <Unit0>
+    <Units>
+      <Unit>
         <Filename Value="hashme.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="HashMe"/>
-      </Unit0>
-      <Unit1>
+      </Unit>
+      <Unit>
         <Filename Value="hmmain.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="hmMain"/>
-      </Unit1>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -184,16 +180,16 @@
     </Linking>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="3">
-      <Item1>
+    <Exceptions>
+      <Item>
         <Name Value="EAbort"/>
-      </Item1>
-      <Item2>
+      </Item>
+      <Item>
         <Name Value="ECodetoolError"/>
-      </Item2>
-      <Item3>
+      </Item>
+      <Item>
         <Name Value="EFOpenError"/>
-      </Item3>
+      </Item>
     </Exceptions>
   </Debugging>
 </CONFIG>
